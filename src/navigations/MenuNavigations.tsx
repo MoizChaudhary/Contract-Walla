@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,13 +9,13 @@ import {
   useColorScheme,
   ScrollView,
 } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import Home from '../screens/Home';
 import YourMunshi from '../screens/YourMunshi';
 import ContractMarker from '../screens/ContractMarker';
 import CaseLawSearch from '../screens/CaseLawSearch';
 import Support from '../screens/Support';
-import { Images } from '../assets/images';
+import {Images} from '../assets/images';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -26,26 +26,28 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome6';
 //@ts-ignore
 import MaterialIconss from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation } from '@react-navigation/native';
-import { NavigationRoute } from './navigationRoute';
+import {useNavigation} from '@react-navigation/native';
+import {NavigationRoute} from './navigationRoute';
+import SupportModal from '../screens/Support'; // Import your modal component
 
 const Drawer = createDrawerNavigator();
 
-const CustomDrawerContent = ({ toggleDarkMode, isDarkMode }: any) => {
+const CustomDrawerContent = ({toggleDarkMode, isDarkMode}: any) => {
   const navigation = useNavigation();
-  const [selectedMenu, setSelectedMenu] = useState(NavigationRoute.Home); // Default selected item
+  const [selectedMenu, setSelectedMenu] = useState(NavigationRoute.Home);
+  const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
 
   return (
     <View
       style={[
         styles.drawerContent,
-        { backgroundColor: isDarkMode ? '#000' : '#fff' },
+        {backgroundColor: isDarkMode ? '#000' : '#fff'},
       ]}>
       <ScrollView>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <Image
             source={Images.Logo}
-            style={{ width: wp('12%'), height: hp('8%'), resizeMode: 'contain' }}
+            style={{width: wp('12%'), height: hp('8%'), resizeMode: 'contain'}}
           />
           <Text
             style={{
@@ -95,21 +97,28 @@ const CustomDrawerContent = ({ toggleDarkMode, isDarkMode }: any) => {
         <View>
           <Image
             source={Images.robot}
-            style={{ width: wp("100%"), height: hp("30"), resizeMode: 'contain', right: wp("20%") }}
+            style={{
+              width: wp('100%'),
+              height: hp('30'),
+              resizeMode: 'contain',
+              right: wp('20%'),
+            }}
           />
         </View>
         <DrawerItem
           label="Support"
-          materialFontName="support"
-          navigationTarget={NavigationRoute.Support}
+          PrfileiconName="support"
+          navigationTarget={null} // Set navigationTarget to null for modal
           isDarkMode={isDarkMode}
           selected={selectedMenu === NavigationRoute.Support}
           setSelectedMenu={setSelectedMenu}
+          onPress={() => setModalVisible(true)} // Open modal
         />
 
         {/* Dark Mode Switch */}
         <View style={styles.switchContainer}>
-          <Text style={[styles.menuItem, { color: isDarkMode ? '#fff' : '#000' }]}>
+          <Text
+            style={[styles.menuItem, {color: isDarkMode ? '#fff' : '#000'}]}>
             Dark Mode
           </Text>
           <Switch value={isDarkMode} onValueChange={toggleDarkMode} />
@@ -117,50 +126,79 @@ const CustomDrawerContent = ({ toggleDarkMode, isDarkMode }: any) => {
 
         <DrawerItem
           label="Profile"
-          fontIconName="circle-user"
+          FonticonName="circle-user"
           navigationTarget={NavigationRoute.Support}
           isDarkMode={isDarkMode}
-          selected={selectedMenu === 'Profile'} // Update condition if needed
+          selected={selectedMenu === 'Profile'}
           setSelectedMenu={setSelectedMenu}
+        />
+
+        {/* Support Modal */}
+        <SupportModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)} // Close modal
         />
       </ScrollView>
     </View>
   );
 };
 
-const DrawerItem = ({ label, iconName, navigationTarget, isDarkMode, selected, setSelectedMenu,materialFontName,fontIconName}: any) => {
+const DrawerItem = ({
+  label,
+  iconName,
+  navigationTarget,
+  isDarkMode,
+  selected,
+  setSelectedMenu,
+  onPress,
+  PrfileiconName,
+  FonticonName,
+}: any) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       style={[
         styles.menuItemTouchStyle,
-        { backgroundColor: selected ? (isDarkMode ? '#333': '#dde7ee') : (isDarkMode ? '#000' : '#fff') },
+        {
+          backgroundColor: selected
+            ? isDarkMode
+              ? '#333'
+              : '#dde7ee'
+            : isDarkMode
+            ? '#000'
+            : '#fff',
+        },
       ]}
       onPress={() => {
-        //@ts-ignore
-        navigation.navigate(navigationTarget);
+        if (navigationTarget) {
+          //@ts-ignore
+          navigation.navigate(navigationTarget);
+        }
+        if (onPress) {
+          onPress(); // Call the onPress function if provided
+        }
         setSelectedMenu(navigationTarget); // Set selected menu
       }}>
       <MaterialIcons
         name={iconName}
         size={25}
-        alignSelf={"center"}
+        alignSelf={'center'}
         color={isDarkMode ? 'white' : 'black'}
-      />
+      /> 
       <MaterialIconss
-        name={materialFontName}
+        name={PrfileiconName}
         size={25}
-        alignSelf={"center"}
+        alignSelf={'center'}
+        color={isDarkMode ? 'white' : 'black'}
+      /> 
+      <FontAwesome
+        name={FonticonName}
+        size={25}
+        alignSelf={'center'}
         color={isDarkMode ? 'white' : 'black'}
       />
-       <FontAwesome
-        name={fontIconName}
-        size={25}
-        alignSelf={"center"}
-        color={isDarkMode ? 'white' : 'black'}
-      />
-      <Text style={[styles.menuItem, { color: isDarkMode ? '#fff' : '#000' }]}>
+      <Text style={[styles.menuItem, {color: isDarkMode ? '#fff' : '#000'}]}>
         {label}
       </Text>
     </TouchableOpacity>
@@ -173,9 +211,7 @@ export default function DrawerNavigator() {
   const toggleDarkMode = () => {
     setIsDarkMode(previousState => !previousState);
   };
-const toggleDrawer=()=>{
-  toggleDrawer();
-}
+
   return (
     <Drawer.Navigator
       drawerContent={props => (
@@ -183,16 +219,21 @@ const toggleDrawer=()=>{
           {...props}
           toggleDarkMode={toggleDarkMode}
           isDarkMode={isDarkMode}
-          toggleDrawer={toggleDrawer}
         />
       )}
       screenOptions={{
-        headerShown: false, // This hides the default header
+        headerShown: false,
       }}>
       <Drawer.Screen name={NavigationRoute.Home} component={Home} />
       <Drawer.Screen name={NavigationRoute.YourMunshi} component={YourMunshi} />
-      <Drawer.Screen name={NavigationRoute.ContractMarker} component={ContractMarker} />
-      <Drawer.Screen name={NavigationRoute.CaseLawSearch} component={CaseLawSearch} />
+      <Drawer.Screen
+        name={NavigationRoute.ContractMarker}
+        component={ContractMarker}
+      />
+      <Drawer.Screen
+        name={NavigationRoute.CaseLawSearch}
+        component={CaseLawSearch}
+      />
       <Drawer.Screen name={NavigationRoute.Support} component={Support} />
     </Drawer.Navigator>
   );
@@ -207,11 +248,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginHorizontal: wp('3%'),
     paddingVertical: wp('3%'),
-  },
-  profileItem: {
-    fontSize: 18,
-    paddingVertical: 10,
-    marginTop: 'auto',
   },
   switchContainer: {
     flexDirection: 'row',

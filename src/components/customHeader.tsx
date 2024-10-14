@@ -13,6 +13,7 @@ const CustomHeader = ({ title }: any) => {
   return (
     <View style={[styles.headerContainer,  ]}>
       <TouchableOpacity
+      //@ts-ignore
          onPress={() => navigation.toggleDrawer()}>
         <MaterialIcons name="menu" size={25} color={isDarkMode ? '#fff' : '#000'} />
       </TouchableOpacity>
