@@ -34,7 +34,7 @@ import YourMunshiMdoal from '../components/YourMunshiMdoal';
 
 const Drawer = createDrawerNavigator();
 
-const CustomDrawerContent = ({toggleDarkMode, isDarkMode}: any) => {
+export const CustomDrawerContent = ({toggleDarkMode, isDarkMode}: any) => {
   const navigation = useNavigation();
   const [selectedMenu, setSelectedMenu] = useState(NavigationRoute.Home);
   const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
@@ -260,39 +260,39 @@ const DrawerItem = ({
   );
 };
 
-export default function DrawerNavigator() {
-  const [isDarkMode, setIsDarkMode] = useState(useColorScheme() === 'dark');
+// export default function DrawerNavigator() {
+//   const [isDarkMode, setIsDarkMode] = useState(useColorScheme() === 'dark');
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(previousState => !previousState);
-  };
+//   const toggleDarkMode = () => {
+//     setIsDarkMode(previousState => !previousState);
+//   };
 
-  return (
-    <Drawer.Navigator
-      drawerContent={props => (
-        <CustomDrawerContent
-          {...props}
-          toggleDarkMode={toggleDarkMode}
-          isDarkMode={isDarkMode}
-        />
-      )}
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Drawer.Screen name={NavigationRoute.Home} component={Home} />
-      <Drawer.Screen name={NavigationRoute.YourMunshi} component={YourMunshi} />
-      <Drawer.Screen
-        name={NavigationRoute.ContractMarker}
-        component={ContractMarker}
-      />
-      <Drawer.Screen
-        name={NavigationRoute.CaseLawSearch}
-        component={CaseLawSearch}
-      />
-      <Drawer.Screen name={NavigationRoute.Support} component={Support} />
-    </Drawer.Navigator>
-  );
-}
+//   return (
+//     <Drawer.Navigator
+//       drawerContent={props => (
+//         <CustomDrawerContent
+//           {...props}
+//           toggleDarkMode={toggleDarkMode}
+//           isDarkMode={isDarkMode}
+//         />
+//       )}
+//       screenOptions={{
+//         headerShown: false,
+//       }}>
+//       <Drawer.Screen name={NavigationRoute.Home} component={Home} />
+//       <Drawer.Screen name={NavigationRoute.YourMunshi} component={YourMunshi} />
+//       <Drawer.Screen
+//         name={NavigationRoute.ContractMarker}
+//         component={ContractMarker}
+//       />
+//       <Drawer.Screen
+//         name={NavigationRoute.CaseLawSearch}
+//         component={CaseLawSearch}
+//       />
+//       <Drawer.Screen name={NavigationRoute.Support} component={Support} />
+//     </Drawer.Navigator>
+//   );
+// }
 
 const styles = StyleSheet.create({
   drawerContent: {
