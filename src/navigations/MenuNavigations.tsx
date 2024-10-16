@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Home from '../screens/Home';
@@ -29,6 +30,7 @@ import MaterialIconss from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationRoute} from './navigationRoute';
 import SupportModal from '../screens/Support'; // Import your modal component
+import YourMunshiMdoal from '../components/YourMunshiMdoal';
 
 const Drawer = createDrawerNavigator();
 
@@ -36,7 +38,20 @@ const CustomDrawerContent = ({toggleDarkMode, isDarkMode}: any) => {
   const navigation = useNavigation();
   const [selectedMenu, setSelectedMenu] = useState(NavigationRoute.Home);
   const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
+  // const showComingSoonAlert = () => {
+  //   Alert.alert("Feature Coming Soon!", "This feature is under development.");
+  // };
+  const [isMunshiVisible, setMunshiVisible] = useState(false);
 
+  // Function to show the YourMunshi modal
+  const openMunshiModal = () => {
+    setMunshiVisible(true);
+  };
+
+  // Function to hide the YourMunshi modal
+  const closeMunshiModal = () => {
+    setMunshiVisible(false);
+  };
   return (
     <View
       style={[
@@ -73,11 +88,13 @@ const CustomDrawerContent = ({toggleDarkMode, isDarkMode}: any) => {
         <DrawerItem
           label="Your Munshi"
           iconName="robot"
-          navigationTarget={NavigationRoute.YourMunshi}
+          navigationTarget={null}
           isDarkMode={isDarkMode}
           selected={selectedMenu === NavigationRoute.YourMunshi}
           setSelectedMenu={setSelectedMenu}
+          onPress={() => setMunshiVisible(true)} // Open modal
         />
+
         <DrawerItem
           label="Contract Marker"
           iconName="clipboard-text"
@@ -123,7 +140,7 @@ const CustomDrawerContent = ({toggleDarkMode, isDarkMode}: any) => {
           </Text>
           <Switch value={isDarkMode} onValueChange={toggleDarkMode} />
         </View>
-
+        {/* 
         <DrawerItem
           label="Profile"
           FonticonName="circle-user"
@@ -131,14 +148,52 @@ const CustomDrawerContent = ({toggleDarkMode, isDarkMode}: any) => {
           isDarkMode={isDarkMode}
           selected={selectedMenu === 'Profile'}
           setSelectedMenu={setSelectedMenu}
-        />
-
-        {/* Support Modal */}
-        <SupportModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)} // Close modal
-        />
+        /> */}
       </ScrollView>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginHorizontal: wp('4%'),
+          marginVertical: hp('3'),
+        }}>
+        <FontAwesome
+          name={'circle-user'}
+          size={30}
+          alignSelf={'center'}
+          color={isDarkMode ? 'white' : 'black'}
+        />
+        <View>
+          <Text
+            numberOfLines={1}
+            style={{fontSize: 17, color: isDarkMode ? '#ffffff' : '#000000'}}>
+            Muhammad Moiz
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={{fontSize: 15, color: isDarkMode ? '#ffffff' : '#000000'}}>
+            moiz@gmail.com
+          </Text>
+        </View>
+        <TouchableOpacity style={{alignSelf: 'center'}}>
+          <MaterialIconss
+            name={'logout'}
+            size={25}
+            alignSelf={'center'}
+            color={isDarkMode ? 'white' : 'black'}
+          />
+        </TouchableOpacity>
+      </View>
+
+      {/*Your Munshi Mdoal */}
+      <YourMunshiMdoal  visible={isMunshiVisible} onClose={()=>setMunshiVisible(false)}/>
+
+      {/* Support Modal */}
+      <SupportModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)} // Close modal
+      />
     </View>
   );
 };
@@ -185,13 +240,13 @@ const DrawerItem = ({
         size={25}
         alignSelf={'center'}
         color={isDarkMode ? 'white' : 'black'}
-      /> 
+      />
       <MaterialIconss
         name={PrfileiconName}
         size={25}
         alignSelf={'center'}
         color={isDarkMode ? 'white' : 'black'}
-      /> 
+      />
       <FontAwesome
         name={FonticonName}
         size={25}

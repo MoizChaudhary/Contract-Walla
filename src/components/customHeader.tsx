@@ -1,23 +1,33 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 // Import images and vector icons as before
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 //@ts-ignore
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const CustomHeader = ({ title }: any) => {
+const CustomHeader = ({title}: any) => {
   const navigation = useNavigation(); // Use navigation inside the header
   // const themeStyles = isDarkMode ? styles.darkTheme : styles.lightTheme;
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <View style={[styles.headerContainer,  ]}>
+    <View style={[styles.headerContainer]}>
       <TouchableOpacity
-      //@ts-ignore
-         onPress={() => navigation.toggleDrawer()}>
-        <MaterialIcons name="menu" size={25} color={isDarkMode ? '#fff' : '#000'} />
+        //@ts-ignore
+        onPress={() => navigation.toggleDrawer()}>
+        <MaterialIcons
+          name="menu"
+          size={25}
+          color={isDarkMode ? '#fff' : '#000'}
+         />
       </TouchableOpacity>
-      <Text style={[styles.headerTitle, { color: isDarkMode ? '#fff' : '#000' }]}>
+      <Text style={[styles.headerTitle, {color: isDarkMode ? '#fff' : '#000'}]}>
         {title}
       </Text>
     </View>

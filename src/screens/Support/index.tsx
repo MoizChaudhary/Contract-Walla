@@ -49,7 +49,7 @@ const SupportPopup = ({visible, onClose}: any) => {
               ]}>
               If you have any concerns or need assistance, please don't hesitate
               to email us at
-              <Text style={styles.email}> info@contractwalla.com</Text>. We're
+              <Text style={[styles.email,isDarkMode ? styles.darkText : styles.lightText]}> info@contractwalla.com</Text>. We're
               here to help you with any queries or issues.
             </Text>
             <View style={styles.buttonContainer}>

@@ -1,7 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationRoute} from '../navigations/navigationRoute';
- 
+
 import React from 'react';
 import {ThemeProvider} from '../ContextApi/ThemeContext';
 // import bottomNavigation from '../../bottomNavigation/bottomNavigation';
@@ -18,7 +18,6 @@ import Support from '../screens/Support';
 import Profile from '../screens/Profile';
 
 const Stack = createStackNavigator();
- 
 
 const Navigator = () => {
   return (
@@ -34,14 +33,23 @@ const Navigator = () => {
             component={SplashScreen}
           />
 
+          <Stack.Screen name={NavigationRoute.logIn} component={logIn} />
+
           <Stack.Screen name={NavigationRoute.signUp} component={signUp} />
-          <Stack.Screen name={NavigationRoute.CaseLawSearch} component={CaseLawSearch} />
-          <Stack.Screen name={NavigationRoute.YourMunshi} component={YourMunshi} />
-          <Stack.Screen name={NavigationRoute.ContractMarker} component={ContractMarker} />
+          <Stack.Screen
+            name={NavigationRoute.CaseLawSearch}
+            component={CaseLawSearch}
+          />
+          <Stack.Screen
+            name={NavigationRoute.YourMunshi}
+            component={YourMunshi}
+          />
+          <Stack.Screen
+            name={NavigationRoute.ContractMarker}
+            component={ContractMarker}
+          />
           <Stack.Screen name={NavigationRoute.Support} component={Support} />
           <Stack.Screen name={NavigationRoute.Profile} component={Profile} />
-
-           
 
           <Stack.Screen
             name={NavigationRoute.forgotPassword}
@@ -51,11 +59,8 @@ const Navigator = () => {
             name={NavigationRoute.MenuNavigations}
             component={MenuNavigations}
           />
-          
-        
         </Stack.Navigator>
       </NavigationContainer>
-       
     </ThemeProvider>
   );
 };
