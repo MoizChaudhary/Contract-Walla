@@ -160,8 +160,8 @@ const Home = () => {
                 marginHorizontal: wp('2%'),
                 marginTop: hp('1%'),
               }}>
-              <Text style={{textAlign: 'center',color: isDarkMode ? '#fff' : '#000',}}>Innovative AI </Text>
-              <Text style={{textAlign: 'center',color: isDarkMode ? '#fff' : '#000',}}>Contract Marker</Text>
+              <Text style={{textAlign: 'center',color: isDarkMode ? '#fff' : '#000',fontSize:12}}>Innovative AI </Text>
+              <Text style={{textAlign: 'center',color: isDarkMode ? '#fff' : '#000',fontSize:10}}>Contract Marker</Text>
             </TouchableOpacity>
           </View>
           <View
@@ -182,8 +182,8 @@ const Home = () => {
                 marginHorizontal: wp('2%'),
                 marginTop: hp('1%'),
               }}>
-              <Text style={{textAlign: 'center',color: isDarkMode ? '#fff' : '#000',}}>Technology-Driven</Text>
-              <Text style={{textAlign: 'center',color: isDarkMode ? '#fff' : '#000',}}>Legal Excillence</Text>
+              <Text style={{textAlign: 'center',color: isDarkMode ? '#fff' : '#000',fontSize:12}}>Technology-Driven</Text>
+              <Text style={{textAlign: 'center',color: isDarkMode ? '#fff' : '#000',fontSize:10}}>Legal Excillence</Text>
             </TouchableOpacity>
           </View>
         </View>
