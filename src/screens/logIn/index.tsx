@@ -21,7 +21,9 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../../ContextApi/ThemeContext'; // Adjust the import path
 import {color} from 'native-base/lib/typescript/theme/styled-system';
-
+import {handleLoginAPI} from '../../utils/axiosApiHit';
+import {NavigationRoute} from '../../navigations/navigationRoute';
+import {dataServer} from '../../utils/axios';
 const LogIn = () => {
   const colorScheme = useColorScheme(); // Detect the color scheme
 
@@ -39,6 +41,22 @@ const LogIn = () => {
       .min(8, 'Password must be at least 8 characters')
       .required('Password is required'),
   });
+  const LoginFunction = async (email:any, password:any) => {
+    //here you see the dataServer.post function you use any type of method in it like //put, delete etc. Just like dataServer.put and dataServer.delete
+    try {
+      const _loginApi: any = await dataServer.post('/auth/login', {
+        // pass parameters like this
+        email: email,
+        password: password,
+      });
+      // here you will getting the response
+      console.log('Data', _loginApi);
+      return _loginApi;
+    } catch (e: any) {
+      //Here you are getting an error.
+      console.log('Error', e.response);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -83,8 +101,24 @@ const LogIn = () => {
             password: '',
           }}
           validationSchema={signUpValidationSchema}
-          onSubmit={values => {
-            console.log(values);
+          onSubmit={async values => {
+            try {
+              const response = await LoginFunction(values.email, values.password);
+            
+              // Log the response to confirm its structure
+              console.log('Responseeeeeeee:', response);
+            
+              // Check if login was successful
+              if (response?.message === 'Login successful.') {
+                navigation.navigate('DrawerScreens');
+                console.log('Login successful, navigating to Home');
+              } else {
+                console.log('Login failed:', response?.message || 'Unknown error');
+              }
+            } catch (error) {
+              console.error('Login error:', error); // Log unexpected errors
+            }
+            
           }}>
           {({
             handleChange,

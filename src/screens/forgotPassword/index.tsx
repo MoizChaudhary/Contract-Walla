@@ -20,13 +20,29 @@ import {
 } from 'react-native-responsive-screen'; // Import responsive screen functions
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../../ContextApi/ThemeContext'; // Adjust the import path
+ import { dataServer } from '../../utils/axios';
+
+ 
 
 const ForgotPassword = () => {
+  const handleForgetPassOTPAPI = async (email: string) => {
+    try {
+       const response = await dataServer.post('/auth/forgetPassOTP', {email});
+      if (response.status === 200 || response.status === 201) {
+        console.log('Success from API:', response.data);
+        return response.data;
+      } else {
+        console.log('Error hitting API:', response);
+        return response;
+      }
+    } catch (error) {
+      console.error('Error hitting API:', error);
+      return null;
+    }
+  };
   const colorScheme = useColorScheme(); // Detect the color scheme
-
   const isDarkMode = colorScheme === 'dark';
   const navigation: any = useNavigation();
-
   const themeStyles = isDarkMode ? styles.darkTheme : styles.lightTheme;
 
   const signUpValidationSchema = Yup.object().shape({
@@ -67,8 +83,17 @@ const ForgotPassword = () => {
             email: '',
           }}
           validationSchema={signUpValidationSchema}
-          onSubmit={values => {
-            console.log(values);
+          onSubmit={async values => {
+            console.log('Submitting email:', values.email);
+            const response = await handleForgetPassOTPAPI(values.email);
+            console.log('API Response:', response);
+            if (response && response.message === "OTP sent to your email. Please verify to complete registration.") {
+              console.log('OTP sent successfully:', response);
+              navigation.navigate('OtpScreen',{email: values.email,});
+              // Navigate or show success message here
+            } else {
+              console.log('Failed to send OTP.');
+            }
           }}>
           {({
             handleChange,

@@ -18,6 +18,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useNavigation} from '@react-navigation/native';
+import {NavigationRoute} from '../../navigations/navigationRoute';
+import {dataServer} from '../../utils/axios';
 
 const SignUpScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -25,6 +27,29 @@ const SignUpScreen = () => {
   const colorScheme = useColorScheme(); // Detect the color scheme
   const isDarkMode = colorScheme === 'dark';
   const themeStyles = isDarkMode ? styles.darkTheme : styles.lightTheme;
+  const SignupFunction = async (
+    email: any,
+    password: any,
+    name: any,
+    phone: any,
+  ) => {
+    // You can use any HTTP method here, like post, put, delete, etc.
+    try {
+      const _signupApi: any = await dataServer.post('/auth/signup', {
+        // Pass parameters like this
+        email: email,
+        password: password,
+        name: name,
+        phone: phone,
+      });
+      // Here you will get the response
+      console.log('Signup Data', _signupApi);
+      return _signupApi;
+    } catch (e: any) {
+      // Here you will catch any errors
+      console.log('Signup Error', e.response);
+    }
+  };
 
   const signUpValidationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
@@ -38,7 +63,7 @@ const SignUpScreen = () => {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password')], 'Passwords do not match')
       .required('Confirm Password is required'),
-    phoneNumber: Yup.string().matches(
+    phone: Yup.string().matches(
       /^[0-9]{10,12}$/,
       'Phone number is not valid',
     ),
@@ -53,7 +78,7 @@ const SignUpScreen = () => {
           Sign Up
         </Text>
         <Text style={[styles.signInLink, isDarkMode && {color: '#ffffff'}]}>
-          Already have an account?{' '}
+          Already have an account?
           <Text
             onPress={() => {
               navigation.navigate('logIn');
@@ -84,11 +109,40 @@ const SignUpScreen = () => {
             email: '',
             password: '',
             confirmPassword: '',
-            phoneNumber: '',
+            phone: '',
           }}
           validationSchema={signUpValidationSchema}
-          onSubmit={values => {
-            console.log(values);
+          onSubmit={async values => {
+            console.log('', values);
+
+            try {
+              const response = await SignupFunction(
+                values.email,
+                values.password,
+                `${values.firstName} ${values.lastName}`,
+                values.phone,
+              );
+              console.log(response, 'response');
+              if (
+                response?.message ===
+                'OTP sent to your email. Please verify to complete registration.'
+              ) {
+                navigation.navigate('OtpScreen', {
+                  email: values.email,
+                  password: values.password,
+                  name: `${values.firstName} ${values.lastName}`,
+                  phone: values.phone,
+                }); // Navigate to the desired screen after signup
+                console.log('oky');
+              } else {
+                console.log(
+                  'Signup failed:',
+                  response?.message || 'Unknown error',
+                );
+              }
+            } catch (error) {
+              console.error('Signup error:', error); // Log unexpected errors
+            }
           }}>
           {({
             handleChange,
@@ -313,10 +367,10 @@ const SignUpScreen = () => {
               <TextInput
                 label="Phone Number"
                 mode="outlined"
-                onChangeText={handleChange('phoneNumber')}
-                onBlur={handleBlur('phoneNumber')}
-                value={values.phoneNumber}
-                error={touched.phoneNumber && errors.phoneNumber ? true : false}
+                onChangeText={handleChange('phone')}
+                onBlur={handleBlur('phone')}
+                value={values.phone}
+                error={touched.phone && errors.phone ? true : false}
                 keyboardType="phone-pad"
                 style={[styles.input, isDarkMode && {backgroundColor: '#333'}]}
                 textColor={isDarkMode ? '#ffffff' : '#000000'}
@@ -341,8 +395,8 @@ const SignUpScreen = () => {
                   />
                 } // Left Icon
               />
-              {touched.phoneNumber && errors.phoneNumber && (
-                <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+              {touched.phone && errors.phone && (
+                <Text style={styles.errorText}>{errors.phone}</Text>
               )}
 
               <TouchableOpacity

@@ -11,11 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import Home from '../screens/Home';
-import YourMunshi from '../screens/YourMunshi';
-import ContractMarker from '../screens/ContractMarker';
-import CaseLawSearch from '../screens/CaseLawSearch';
-import Support from '../screens/Support';
+ 
 import {Images} from '../assets/images';
 import {
   widthPercentageToDP as wp,
@@ -31,10 +27,13 @@ import {useNavigation} from '@react-navigation/native';
 import {NavigationRoute} from './navigationRoute';
 import SupportModal from '../screens/Support'; // Import your modal component
 import YourMunshiMdoal from '../components/YourMunshiMdoal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Drawer = createDrawerNavigator();
 
+
 export const CustomDrawerContent = ({toggleDarkMode, isDarkMode}: any) => {
+  
   const navigation = useNavigation();
   const [selectedMenu, setSelectedMenu] = useState(NavigationRoute.Home);
   const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
@@ -52,6 +51,20 @@ export const CustomDrawerContent = ({toggleDarkMode, isDarkMode}: any) => {
   const closeMunshiModal = () => {
     setMunshiVisible(false);
   };
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.clear(); // Clear all saved data in AsyncStorage
+      navigation.reset({
+        index: 0,
+        //@ts-ignore
+        routes: [{name: 'logIn'}], // Redirect to the Login screen
+      });
+    } catch (error) {
+      console.error('Error during logout:', error);
+      Alert.alert('Logout Failed', 'An error occurred while logging out. Please try again.');
+    }
+  };
+ 
   return (
     <View
       style={[
@@ -176,7 +189,7 @@ export const CustomDrawerContent = ({toggleDarkMode, isDarkMode}: any) => {
             moiz@gmail.com
           </Text>
         </View>
-        <TouchableOpacity style={{alignSelf: 'center'}}>
+        <TouchableOpacity style={{alignSelf: 'center'}} onPress={handleLogout}>
           <MaterialIconss
             name={'logout'}
             size={25}
@@ -210,6 +223,7 @@ const DrawerItem = ({
   FonticonName,
 }: any) => {
   const navigation = useNavigation();
+  
 
   return (
     <TouchableOpacity

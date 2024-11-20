@@ -9,7 +9,7 @@ export const NavigationRoute = {
   CaseLawSearch:"CaseLawSearch",
   MenuNavigations:'MenuNavigations',
   Support:'Support',
-  Profile:'Profile'
-  // Otp: 'Otp',
+  Profile:'Profile',
+  OtpScreen:'OtpScreen'
   // NewPassword: 'NewPassword',
 };

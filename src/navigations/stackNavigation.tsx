@@ -18,6 +18,7 @@ import Profile from '../screens/Profile';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {useColorScheme} from 'react-native';
 import {CustomDrawerContent} from '../navigations/MenuNavigations';
+import OtpScreen from '../screens/OtpScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -60,7 +61,7 @@ const Navigator = () => {
     <ThemeProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName={'DrawerScreens'}
+          initialRouteName={'SplashScreen'}
           screenOptions={{
             headerShown: false,
           }}>
@@ -70,11 +71,15 @@ const Navigator = () => {
           />
           <Stack.Screen name={NavigationRoute.logIn} component={logIn} />
           <Stack.Screen name={NavigationRoute.signUp} component={signUp} />
+          <Stack.Screen name={NavigationRoute.OtpScreen} component={OtpScreen} />
+
           <Stack.Screen
             name={NavigationRoute.forgotPassword}
             component={forgotPassword}
           />
           <Stack.Screen name="DrawerScreens" component={DrawerScreens} />
+
+          
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider>
